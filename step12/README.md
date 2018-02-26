@@ -27,9 +27,9 @@ $ docker-compose exec connect curl -s -XPOST -H "Content-Type: application/json;
         "database.password": "dbz",
         "database.server.id": "223344",
         "database.server.name": "dbserver1",
-        "database.whitelist": "mydb",
+        "database.whitelist": "db",
         "database.history.kafka.bootstrap.servers": "kafka-1:9092,kafka-2:9092,kafka-3:9092",
-        "database.history.kafka.topic": "schema-changes.mydb"
+        "database.history.kafka.topic": "schema-changes.db"
     }
 }'
 ```
