@@ -80,6 +80,3 @@ docker-compose exec ksql-cli ksql-cli local --bootstrap-server kafka-1:9092
 
 Perfect!
 
-# The full action ?
-
-[![screencast](https://asciinema.org/a/cuBXz5JjrzvM2j2jMdQWm2TWn.png)](https://asciinema.org/a/cuBXz5JjrzvM2j2jMdQWm2TWn?autoplay=1)
