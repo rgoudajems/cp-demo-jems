@@ -54,12 +54,14 @@ services:
   mysql:
     image: mysql:5.7
     volumes:
-      - ../step9/mysql-init.sql:/docker-entrypoint-initdb.d/mysql-init.sql
+      - ../step11/mysql.cnf:/etc/mysql/conf.d/custom.cnf
+      - ../step11/mysql-init.sql:/docker-entrypoint-initdb.d/mysql-init.sql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
+      MYSQL_ROOT_HOST: 172.%  # Allow docker containers to connect to mysql
 
   schema-registry:
     image: confluentinc/cp-schema-registry:4.0.0
@@ -95,15 +97,18 @@ services:
       CONNECT_OFFSET_STORAGE_TOPIC: connect-offsets
       CONNECT_STATUS_STORAGE_TOPIC: connect-status
       CONNECT_REPLICATION_FACTOR: 2
-      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
-      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8082
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8082
       CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
       CONNECT_PLUGIN_PATH: "/usr/share/java"
       CONNECT_LOG4J_LOGGERS: org.reflections=ERROR
     volumes:
       - ../step9/mysql-connector-java-5.1.45-bin.jar:/usr/share/java/kafka-connect-jdbc/mysql-connector-java-5.1.45-bin.jar
+      - ../step11/debezium-connector-mysql:/usr/share/java/debezium-connector-mysql
     healthcheck:
       test: ["CMD", "nc", "127.0.0.1", "8083"]
       start_period: 30s
