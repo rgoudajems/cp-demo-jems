@@ -31,7 +31,7 @@ DELIMITER $$
   DECLARE x  INT;
 
  SET x = 1;
- SET fin =  3600;
+ SET fin =  1;
  WHILE fin  <= 3600 DO
 
   SET ROW_ID_V = CONCAT('CONT-' , x);
@@ -59,6 +59,7 @@ DELIMITER $$
   SET EMP_FLG = "N";
   SET PRIV_FLG = "N";
   SET  x = x + 1; 
+  SET  fin = fin + 1;
   INSERT INTO s_contact ( 
   ROW_ID ,
   SEND_NEWS_FLG ,

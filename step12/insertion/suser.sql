@@ -10,13 +10,14 @@ DELIMITER $$
   DECLARE LOGIN_V VARCHAR(50);
  	
  SET x = 1;
- SET fin =  3600;
+ SET fin =  1;
  
  WHILE fin  <= 3600 DO
  SET ROW_ID_V = CONCAT('CONT-' , x);
  SET LOGIN_V = CONCAT('LOGIN-',x);
 
  SET  x = x + 1; 
+ SET  fin = fin + 1;
  INSERT INTO s_user (   
   ROW_ID ,
   LOGIN
@@ -30,4 +31,4 @@ DELIMITER $$
  END WHILE;
  END$$
 DELIMITER ;
-CALL INSERT_SADDRPER();
+CALL INSERT_SUSER();

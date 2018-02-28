@@ -31,7 +31,7 @@ DELIMITER $$
   DECLARE x  INT;
 
  SET x = 1;
- SET fin =  3600;
+ SET fin =  1;
  WHILE fin  <= 3600 DO
 
   SET ROW_ID_V = CONCAT('CONT-' , x);
@@ -45,6 +45,7 @@ DELIMITER $$
   SET CELL_PH_NUM_V = CONCAT('0761563629', x);
   SET ASST_PH_NUM_V = CONCAT('0761563629', x);
   SET  x = x + 1; 
+  SET  fin = fin + 1; 
   UPDATE s_contact
   SET  SEX_MF = SEX_MF_V, 
    X_DATE_ACCES_WEB = X_DATE_ACCES_WEB_V,

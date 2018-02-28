@@ -10,13 +10,14 @@ DELIMITER $$
   DECLARE LOGIN_V VARCHAR(50);
  	
  SET x = 1;
- SET fin =  3600;
+ SET fin =  1;
  
  WHILE fin  <= 3600 DO
  SET ROW_ID_V = CONCAT('CONT-' , x);
  SET LOGIN_V = CONCAT('EDF-LOGIN-',x);
 
  SET  x = x + 1; 
+ SET fin = fin + 1;
  UPDATE s_user
  SET  LOGIN = LOGIN_V
  WHERE ROW_ID = ROW_ID_V;

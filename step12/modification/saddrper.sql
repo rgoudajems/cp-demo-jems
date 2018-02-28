@@ -16,13 +16,14 @@ DELIMITER $$
   DECLARE ADDR_V VARCHAR(200);
   
  SET x = 1;
- SET fin =  3600;
+ SET fin =  1;
  
  WHILE fin  <= 3600 DO
  SET ROW_ID_V = CONCAT('AD',x);
  SET ADDR_V = CONCAT(x, ", Rue Edouard Vaillant");
 
  SET  x = x + 1; 
+ SET  fin = fin + 1;
  UPDATE s_addr_per
  SET  ADDR  = ADDR_V 
  WHERE ROW_ID = ROW_ID_V;

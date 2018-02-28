@@ -10,12 +10,13 @@ DELIMITER $$
  	DECLARE x  INT;
 
  SET x = 1;
- SET fin =  3600;
+ SET fin =  1;
  
  WHILE fin  <= 3600 DO
  SET ROW_ID_V=CONCAT('CONT-' , x);
  SET ATTRIB_37_V="EDF ENTREPRISE";
  SET  x = x + 1; 
+ SET  fin = fin + 1; 
  UPDATE s_contact_x
  SET  ATTRIB_37 = ATTRIB_37_V
  WHERE ROW_ID = ROW_ID_V;
