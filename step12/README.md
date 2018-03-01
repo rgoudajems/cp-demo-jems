@@ -78,5 +78,12 @@ docker-compose exec ksql-cli ksql-cli local --bootstrap-server kafka-1:9092
 
 ```
 
+Create  STREAM
+
+```
+CREATE STREAM USER_TEST  ( ROW_ID VARCHAR, LOGIN VARCHAR ) WITH ( kafka_topic='dbserver1.db.S_USER', value_format='JSON');
+
+```
+
 Perfect!
 
