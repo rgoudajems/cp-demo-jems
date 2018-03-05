@@ -1,0 +1,7 @@
+SET 'auto.offset.reset' = 'earliest';
+drop STREAM s_user;
+CREATE STREAM s_user (ROW_ID varchar, LOGIN varchar) WITH ( kafka_topic='topic-s_user',value_format='JSON') ;
+drop STREAM s_user_rekeyed;
+CREATE STREAM s_user_rekeyed AS SELECT * FROM s_user PARTITION  BY ROW_ID;
+drop table s_user_table;
+CREATE TABLE s_user_table AS  SELECT COUNT (*), ROW_ID , LOGIN  FROM  s_user WINDOW TUMBLING (SIZE 5 SECONDS) GROUP BY  ROW_ID, LOGIN HAVING COUNT (*) >=2;​

@@ -1,0 +1,54 @@
+SET 'auto.offset.reset' = 'earliest';
+drop STREAM s_resp ;
+CREATE STREAM s_resp (ROW_ID varchar, NAME varchar) WITH ( kafka_topic='topic-s_resp',value_format='JSON' , KEY='ROW_ID') ;
+
+drop STREAM s_resp_rekeyed;
+CREATE STREAM s_resp_rekeyed AS SELECT * FROM s_resp PARTITION  BY ROW_ID;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE s_resp_table (ROW_ID VARCHAR,  NAME VARCHAR) WITH (VALUE_FORMAT = 'JSON', KAFKA_TOPIC = 'topic-s_resp', KEY = 'ROW_ID');
+
+
+
+
+
+
+CREATE TABLE s_resp_table  AS SELECT ROW_ID , NAME  FROM  s_resp ;
+
+
+
+AS SELECT ROW_ID , NAME  WITH (KAFKA_TOPIC='topic-s_resp', VALUE_FORMAT='JSON', KEY='ROW_ID');
+
+
+
+drop table s_resp_table;
+CREATE TABLE s_resp_table AS SELECT ROW_ID , NAME  FROM  s_resp  GROUP BY  ROW_ID, NAME;​
+
+
+
+CREATE TABLE s_resp_table (ROW_ID VARCHAR, NAME VARCHAR) \
+WITH (kafka_topic='topic-s_resp', value_format='JSON' , KEY = 'ROW_ID');

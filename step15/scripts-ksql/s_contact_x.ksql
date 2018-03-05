@@ -1,0 +1,172 @@
+SET 'auto.offset.reset' = 'earliest';
+drop STREAM s_contact_x;
+
+
+CREATE STREAM s_contact_x ( \
+  ROW_ID  varchar, \
+  PAR_ROW_ID varchar, \
+  ATTRIB_37 varchar \
+ ) \
+ WITH ( kafka_topic='topic-s_contact_x',value_format='JSON') ;
+
+drop STREAM s_contact_x_rekeyed;
+CREATE STREAM s_contact_x_rekeyed AS SELECT * FROM s_contact_x PARTITION  BY ROW_ID;
+
+
+
+
+
+
+
+SET 'auto.offset.reset' = 'earliest';
+drop STREAM s_contact_x; 
+CREATE STREAM s_contact_x WITH ( kafka_topic='dbserver1.db.s_contact_x',value_format='AVRO') ;
+SET 'auto.offset.reset' = 'earliest';
+select * from s_contact_x;
+
+
+drop TABLE s_contact_x_table;
+CREATE TABLE s_contact_x_table WITH (KAFKA_TOPIC='dbserver1.db.s_contact_x', VALUE_FORMAT='AVRO', KEY='ROW_ID');
+
+
+
+SET 'auto.offset.reset' = 'earliest';
+select * from s_contact_x_table;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kafka-topics --alter --zookeeper localhost:2181 --topic kafkatopic --config key=ROW_ID
+
+
+
+CREATE TABLE s_contact_x_table ( \
+  ROW_ID  varchar, \s
+  PAR_ROW_ID varchar, \
+  ATTRIB_37 varchar \
+ ) \
+ WITH ( kafka_topic='dbserver1.db.s_contact_x',value_format='AVRO' ,  KEY = 'ROW_ID') ;
+
+
+------boNNE REQUETE
+
+
+
+CREATE STREAM s_contact WITH (KAFKA_TOPIC='dbserver1.db.s_contact', VALUE_FORMAT='AVRO' , KEY = 'ROW_ID');
+
+SELECT  C.ROW_ID , C.LAST_NAME , cx.ROW_ID, cx.ATTRIB_37 , cx.PAR_ROW_ID \
+FROM s_contact C LEFT JOIN  s_contact_x_table cx   ON cx.ROW_ID=C.ROW_ID WHERE cx.ROW_ID IS NOT NULL;
+
+SELECT  C.ROW_ID , C.LAST_NAME , cx.ROW_ID, cx.ATTRIB_37 , cx.PAR_ROW_ID \
+FROM s_contact_x cx LEFT JOIN  s_contact_table C  ON cx.ROW_ID=C.ROW_ID WHERE C.ROW_ID IS NOT NULL;
+
+
+
+CREATE STREAM s_contact_x  \
+ WITH ( kafka_topic='topic-s_contact_x',value_format='AVRO') ;
+
+
+
+
+CREATE STREAM test_contact AS \
+SELECT  C.ROW_ID , C.LAST_NAME , cx.ATTRIB_37 \
+FROM s_contact C LEFT JOIN  s_contact_x cx  ON cx.ROW_ID=C.ROW_ID;
+
+CREATE STREAM test_contact AS \
+SELECT  C.ROW_ID , C.LAST_NAME , cx.ATTRIB_37  \
+FROM s_contact C LEFT JOIN  s_contact_x_table cx  ON cx.ROW_ID=C.ROW_ID ;
+
+
+ SELECT  C.ROW_ID , C.LAST_NAME , cx.ATTRIB_37 \
+FROM s_contact C LEFT JOIN  s_contact_x cx   ON cx.ROW_ID=C.ROW_ID ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT  C.ROW_ID , C.LAST_NAME , cx.ROW_ID, cx.ATTRIB_37 , cx.PAR_ROW_ID \
+FROM s_contact_x cx LEFT JOIN  s_contact C  ON cx.ROW_ID=C.ROW_ID WHERE C.ROW_ID IS NOT NULL;
+
+--------
+
+SELECT  C.ROW_ID , cx.ROW_ID, cx.ATTRIB_37 , cx.PAR_ROW_ID \
+FROM s_contact_x C LEFT JOIN  s_contact_x_table cx   ON cx.ROW_ID=C.ROW_ID ;
+
+
+SELECT  C.ROW_ID , C.LAST_NAME , cx.ROW_ID, cx.ATTRIB_37 , cx.PAR_ROW_ID \
+FROM s_contact C LEFT JOIN  s_contact_x cx   ON cx.ROW_ID=C.ROW_ID ;
+
+
+
+SELECT  C.ROW_ID FROM s_contact C;
+
+SELECT ROW_ID, ATTRIB_37  FROM s_contact_x_table cx ;
+
+
+cx.ROW_ID is not null  ;
+
+
+
+SELECT  C.ROW_ID , cx.ROW_ID, cx.ATTRIB_37 , cx.PAR_ROW_ID \
+FROM s_contact_x C LEFT JOIN  s_contact_table cx   ON cx.ROW_ID=C.ROW_ID;
+
+--------------------------
+
+
+
+
+create table test as SELECT * FROM s_contact_rekeyed  c LEFT JOIN s_contact_x  cx ON c.ROW_ID = cx.ROW_ID;
+
+
+SELECT * FROM s_contact_rekeyed c , s_contact_x_rekeyed  d group by c.ROW_ID where c.ROW_ID = d.ROW_ID ;
+
+
+
+
+SELECT * FROM s_contact_rekeyed c INNER JOIN s_contact_x_rekeyed  cx ON c.ROW_ID = cx.ROW_ID;
+
+
+create table contact  as
+
+drop STREAM s_contact_x;
+CREATE STREAM s_contact_x WITH (KAFKA_TOPIC='dbserver1.db.s_contact_x', VALUE_FORMAT='AVRO');
+
