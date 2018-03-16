@@ -1,0 +1,188 @@
+curl -s -XPOST -H "Content-Type: application/json; charset=UTF-8" http://localhost:8083/connectors/ -d '
+{
+    "name": "my-mysql-connecteur-test2",
+    "config": {
+      "connector.class":"io.confluent.connect.jdbc.JdbcSourceConnector",
+      "tasks.max":"10",
+      "connection.url":"jdbc:mysql://mysql:3306/db?user=user&password=password&useSSL=false",
+      "table.whitelist":"TEST",
+      "mode":"timestamp",
+      "timestamp.column.name":"Date_Creation",
+      "topic.prefix":"TOPIC-MYSQL-POC-"
+    }
+}
+' | jq .
+
+
+$ curl -s localhost:8083/connectors/my-mysql-connecteur-test2/status | jq .
+
+select CONVERT(Date_Creation, UNSIGNED) AS ID,  NOM,  PRENOM, Date_Modification FROM TEST
+ WHERE Date_Creation < :1
+
+
+ curl -s -XPOST -H "Content-Type: application/json; charset=UTF-8" http://localhost:8083/connectors/ -d '
+{
+    "name": "my-mysql-connecteur-test-4",
+    "config": {
+      "connector.class":"io.confluent.connect.jdbc.JdbcSourceConnector",
+      "tasks.max":"10",
+      "connection.url":"jdbc:mysql://mysql:3306/dbtest?user=user&password=password&useSSL=false",
+      "table.whitelist":"TEST",
+      "mode":"timestamp",
+      "timestamp.column.name":"Date_Creation",
+      "topic.prefix":"POC-EDF-"
+    }
+}
+' | jq .
+
+
+docker-compose exec kafka-1 kafka-topics \
+    --create \
+    --zookeeper zookeeper:2181 \
+    --replication-factor 1 \
+    --partitions 1 \
+    --topic test
+
+ docker-compose exec kafka-1 kafka-topics --zookeeper zookeeper:2181 --list
+
+echo '{"URN": "IDR~CLOE~SIEBEL_S_CONTACT","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_CONTACT_X","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_CONTACT_X","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_CONTACT_X","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_ADDR_PER","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_ADDR_PER","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_RESP","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_USER","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_USER","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}
+{"URN": "IDR~CLOE~SIEBEL_S_RESP","SEQ": "48807865464~7~44754594311746909", "SEQ_FLUX": "004556147","OP": "I", "TIME": "2017-12-07 15:02:54", "DATA": {"X_RUM_NEW": "GB970000697450", "X_RAISON_SOCIALE_NEW": "LE SIEGE", "X_IBAN_NEW": "FT5556678990877899880090250", "X_IBAN_OLD": "", "X_RUM_OLD": "", "X_RAISON_SOCIALE_OLD": ""}}' \
+| docker exec -i $(docker-compose ps -q kafka-1) kafka-console-producer --broker-list kafka-1:9092 --topic idr
+
+
+SET 'auto.offset.reset' = 'earliest';   \
+----------------------------------Table s_contact \
+PRINT 'idr' FROM BEGINNING; \
+
+drop STREAM s_idr_cdc;
+
+CREATE STREAM s_idr_cdc (URN varchar, SEQ varchar, SEQ_FLUX varchar, OP varchar, TIME varchar, DATA varchar) \
+WITH ( kafka_topic='idr',value_format='JSON');
+
+SELECT * from s_idr_cdc;
+
+-------------------STREAM IDR S_CONTACT-----------------------------
+
+drop STREAM s_contact_idr_stream; \
+-------
+CREATE STREAM s_contact_idr_stream AS SELECT \
+        URN ,\
+        SEQ ,\
+        SEQ_FLUX ,\
+        OP,\
+        TIME, \
+        DATA \
+    FROM s_idr_cdc \
+    WHERE URN='IDR~CLOE~SIEBEL_S_CONTACT';
+-------
+SELECT * from s_contact_idr_stream;
+
+-------------------STREAM IDR S_CONTACT_X-----------------------------
+
+drop STREAM s_contact_x_idr_stream; \
+-------
+CREATE STREAM s_contact_x_idr_stream AS SELECT \
+        URN ,\
+        SEQ ,\
+        SEQ_FLUX ,\
+        OP,\
+        TIME, \
+        DATA \
+    FROM s_idr_cdc \
+    WHERE URN='IDR~CLOE~SIEBEL_S_CONTACT_X';
+-------
+SELECT * from s_contact_x_idr_stream;
+
+-------------------STREAM IDR S_ADDR_PER-----------------------------
+
+drop STREAM s_addr_per_idr_stream; \
+-------
+CREATE STREAM s_addr_per_idr_stream AS SELECT \
+        URN ,\
+        SEQ ,\
+        SEQ_FLUX ,\
+        OP,\
+        TIME, \
+        DATA \
+    FROM s_idr_cdc \
+    WHERE URN='IDR~CLOE~SIEBEL_S_ADDR_PER';
+-------
+SELECT * from s_addr_per_idr_stream;
+
+
+-------------------STREAM IDR S_RESP-----------------------------
+
+drop STREAM s_resp_idr_stream; \
+-------
+CREATE STREAM s_resp_idr_stream AS SELECT \
+        URN ,\
+        SEQ ,\
+        SEQ_FLUX ,\
+        OP,\
+        TIME, \
+        DATA \
+    FROM s_idr_cdc \
+    WHERE URN='IDR~CLOE~SIEBEL_S_RESP';
+-------
+SELECT * from s_resp_idr_stream;
+
+
+
+-------------------STREAM IDR S_USER-----------------------------
+
+drop STREAM s_user_idr_stream; \
+-------
+CREATE STREAM s_user_idr_stream AS SELECT \
+        URN ,\
+        SEQ ,\
+        SEQ_FLUX ,\
+        OP,\
+        TIME, \
+        DATA \
+    FROM s_idr_cdc \
+    WHERE URN='IDR~CLOE~SIEBEL_S_USER';
+-------
+SELECT * from s_user_idr_stream;
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE STREAM s_contact_idr_stream (URN varchar, SEQ varchar, SEQ_FLUX varchar, OP varchar, TIME varchar, DATA varchar) \
+WITH ( kafka_topic='idr',value_format='JSON')
+WHERE URN='IDR~CLOE~SIEBEL_S_CONTACT';
+
+
+
+
+
+
+
+
+
+
+
+CREATE STREAM s_contact_idr_stream AS SELECT * FROM s_idr_cdc s WHERE  s.URN='IDR~CLOE~SIEBEL_S_CONTACT' \
+ PARTITION BY  ROW_ID;
+
+
+
+CREATE STREAM s_contact (URN varchar, SEQ varchar, SEQ_FLUX varchar, OP varchar, TIME varchar, DATA varchar) \
+WITH ( kafka_topic='idr',value_format='JSON');
+
+SELECT * from s_idr_cdc;
