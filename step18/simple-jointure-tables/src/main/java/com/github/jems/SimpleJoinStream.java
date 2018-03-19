@@ -40,6 +40,12 @@ public class SimpleJoinStream {
 
         KTable<String,Contact> tableContact = builder.table("SCONTACT_STREAM" , Consumed.with(Serdes.String(), contactSerde));
         KTable<String,Adresse> tableAddr_Per = builder.table("S_ADDR_PER_STREAM" , Consumed.with(Serdes.String(), adresseSerde));
+        
+        tableContact.join(
+                tableAddr_Per,
+                (member, address) -> new Aggregate().withContact(member).withAddresse(address),
+                JoinWindows.of(SECONDS.toMillis(30)).until(windowRetentionTimeMs),
+                Joined.with(Serdes.String(), contactSerde, addresseSerde))
 
      /*   String storeName = "joined-store";
         userRegions.join(userLastLogins,
