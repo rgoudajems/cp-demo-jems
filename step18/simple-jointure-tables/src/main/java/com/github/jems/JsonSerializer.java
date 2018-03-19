@@ -9,11 +9,11 @@ import java.util.Map;
 public class JsonSerializer<T> implements Serializer<T> {
     private final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    @Override
+
     public void configure(Map<String, ?> configs, boolean isKey) {
     }
 
-    @Override
+ 
     public byte[] serialize(String topic, T data) {
         try {
             return data == null ? null : OBJECT_MAPPER.writeValueAsString(data).getBytes();
@@ -22,7 +22,7 @@ public class JsonSerializer<T> implements Serializer<T> {
         }
     }
 
-    @Override
+
     public void close() {
     }
 }

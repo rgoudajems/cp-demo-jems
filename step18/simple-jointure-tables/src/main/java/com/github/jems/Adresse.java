@@ -1,9 +1,9 @@
 package com.github.jems;
-
+import org.apache.kafka.streams.KafkaStreams;
 /**
  * Created by rayanegouda on 16/03/2018.
  */
-public class Adresse {
+public class Adresse  {
     public String id;
     public String streetName;
 

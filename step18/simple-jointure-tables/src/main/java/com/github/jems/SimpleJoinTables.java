@@ -8,30 +8,35 @@ import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
 import org.apache.kafka.streams.Consumed;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.kstream.JoinWindows;
 import  org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
-
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import org.apache.kafka.streams.kstream.Joined;
+
 
 import static java.util.concurrent.TimeUnit.HOURS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 
-public class SimpleJoinStream {
+
+public class SimpleJoinTables {
     private static long windowRetentionTimeMs = HOURS.toMillis(4);
 
     public static void main(String[] args) throws Exception {
-        new SimpleJoinStream().stream(args.length == 1 ? args[0] : "localhost:9092");
+        new SimpleJoinTables().stream(args.length == 1 ? args[0] : "localhost:9092");
     }
 
     public void stream(String bootstrapServers) throws Exception {
         waitForTopics(bootstrapServers);
 
         // Serializer, Deserializer
-        JsonSerde<Contact> contactSerde = new JsonSerde<>(Contact.class);
-        JsonSerde<Adresse> adresseSerde = new JsonSerde<>(Adresse.class);
+        JsonSerde<Contact> contactSerde = new JsonSerde<Contact>(Contact.class);
+        JsonSerde<Adresse> adresseSerde = new JsonSerde<Adresse>(Adresse.class);
+       // JsonSerde<Aggregate> aggregateSerde = new JsonSerde<Aggregate>(Aggregate.class);
 
 
         StreamsBuilder builder = new StreamsBuilder();
@@ -41,59 +46,57 @@ public class SimpleJoinStream {
         KTable<String,Contact> tableContact = builder.table("SCONTACT_STREAM" , Consumed.with(Serdes.String(), contactSerde));
         KTable<String,Adresse> tableAddr_Per = builder.table("S_ADDR_PER_STREAM" , Consumed.with(Serdes.String(), adresseSerde));
 
-     /*   String storeName = "joined-store";
-        userRegions.join(userLastLogins,
-                (regionValue, lastLoginValue) -> regionValue + "/" + lastLoginValue,
-                Materialized.as(storeName))
-                .toStream()
-                .to(outputTopic, Produced.with(Serdes.String(), Serdes.String()));*/
+         tableContact
+         .filter((id, contact) -> contact != null)
+         .join(tableAddr_Per,
+        		 (K, Val) -> {
+        	          if(Val == null) { //means we didn't have a matching value
+        	             return K;  //in the solvedCaptcha table
+        	          }
 
-        
-   /*     members
-        .filter((key, member) -> member != null && member.age > 18)
-        .join(
-                addresses.filter((key, address) -> address != null && "USA".equals(address.country)),
-                (member, address) -> new Aggregate().withMember(member).withAddress(address),
-                JoinWindows.of(SECONDS.toMillis(30)).until(windowRetentionTimeMs),
-                Joined.with(Serdes.Integer(), memberSerde, addressSerde))
-        .outerJoin(
-                teams,
-                (aggregate, team) -> (aggregate == null ? new Aggregate() : aggregate).withTeam(team),
-                JoinWindows.of(SECONDS.toMillis(50)).until(windowRetentionTimeMs),
-                Joined.with(Serdes.Integer(), aggregateSerde, teamSerde))
-        .peek((k, aggregate) -> System.out.println(aggregate))
-        .to(Aggregate.class.getSimpleName(), Produced.with(Serdes.Integer(), aggregateSerde));*/
-
-
-       /* String storeName = "joined-store";
-        tableContact
-                .join(tableAddr_Per,
-                		(aggregate, adresse) -> (aggregate == null ? new Aggregate() : aggregate).withAdresse(adresse),
-                		
-                        Joined.with(Serdes.String(), adresseSerde, teamSerde));*/
-
-
-
-
-   // join return type "VR"es.Integer(), teamSerde));
-
-
-        // SELECT * FROM members m
-        //      INNER JOIN address a ON (m.id = a.id)
-        //      LEFT OUTER JOIN team t on (m.id = t.id)
-        //      WHERE m.age > 18
-        //     AND a.country = "USA"
-
+        	          //if the value was non-null means we have a validated browser
+        	          //and we can return a small value
+        	          return 0L;
+        	       }).toStream().peek((k, aggregate) -> System.out.println(aggregate));
+        		 
 
         Topology build = builder.build();
-
         System.out.println(build.describe());
-
-        KafkaStreams kafkaStreams = new KafkaStreams(build, buildProducerProperties(bootstrapServers));
+       KafkaStreams kafkaStreams = new KafkaStreams(build, buildProducerProperties(bootstrapServers));
         kafkaStreams.cleanUp();
         kafkaStreams.start();
+        
+        
+        
     }
 
+    
+    /*   members
+    .filter((key, member) -> member != null && member.age > 18)
+    .join(
+            addresses.filter((key, address) -> address != null && "USA".equals(address.country)),
+            (member, address) -> new Aggregate().withMember(member).withAddress(address),
+            JoinWindows.of(SECONDS.toMillis(30)).until(windowRetentionTimeMs),
+            Joined.with(Serdes.Integer(), memberSerde, addressSerde))
+    .outerJoin(
+            teams,
+            (aggregate, team) -> (aggregate == null ? new Aggregate() : aggregate).withTeam(team),
+            JoinWindows.of(SECONDS.toMillis(50)).until(windowRetentionTimeMs),
+            Joined.with(Serdes.Integer(), aggregateSerde, teamSerde))
+    .peek((k, aggregate) -> System.out.println(aggregate))
+    .to(Aggregate.class.getSimpleName(), Produced.with(Serdes.Integer(), aggregateSerde));*/
+    
+    
+    
+    /*
+	 (aggregate, adresse) -> ((Aggregate) (aggregate == null ? new Aggregate() : aggregate).withAdresse(adresse),
+    // JoinWindows.of(SECONDS.toMillis(50)).until(windowRetentionTimeMs),	 
+	 Joined.with(Serdes.String(), aggregateSerde, contactSerde))
+	 .peek((k, aggregate) -> System.out.println(aggregate))
+;*/
+
+    
+    
     private void waitForTopics(String bootstrapServers) throws Exception {
         while (true) {
             TimeUnit.SECONDS.sleep(5);

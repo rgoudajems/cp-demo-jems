@@ -1,0 +1,30 @@
+!SESSION 2018-03-19 09:55:43.652 -----------------------------------------------
+eclipse.buildId=4.4.0.I20140606-1215
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/rayanegouda/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -keyring /Users/rayanegouda/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2018-03-19 09:55:54.585
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16|172.16.88.128|localhost|*.localhost|127.0.0.1|192.168.30.0/24|*.192.168.30.0/24|192.168.1.0/24|*.192.168.1.0/24 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2018-03-19 09:56:48.344 -----------------------------------------------
+eclipse.buildId=4.4.0.I20140606-1215
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/rayanegouda/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -keyring /Users/rayanegouda/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2018-03-19 09:58:08.775
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16|172.16.88.128|localhost|*.localhost|127.0.0.1|192.168.30.0/24|*.192.168.30.0/24|192.168.1.0/24|*.192.168.1.0/24 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2018-03-19 09:59:58.105 -----------------------------------------------
+eclipse.buildId=4.4.0.I20140606-1215
+java.version=1.8.0_92
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/rayanegouda/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -data /Users/rayanegouda/Dropbox/MacBook/Java/workspace/cp-demo-jems/step18/simple-jointure-tables -product org.eclipse.epp.package.java.product -keyring /Users/rayanegouda/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2018-03-19 10:00:01.161
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16|172.16.88.128|localhost|*.localhost|127.0.0.1|192.168.30.0/24|*.192.168.30.0/24|192.168.1.0/24|*.192.168.1.0/24 by an external source. This value will be overwritten using the values from the preferences

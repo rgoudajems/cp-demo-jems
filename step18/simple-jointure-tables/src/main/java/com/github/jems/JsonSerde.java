@@ -1,6 +1,7 @@
 package com.github.jems;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serializer;
@@ -17,28 +18,28 @@ public class JsonSerde<T> implements Serde<T> {
         this.clazz = clazz;
     }
 
-    @Override
+
     public void configure(Map<String, ?> configs, boolean isKey) {
     }
 
-    @Override
+   
     public void close() {
     }
 
-    @Override
+ 
     public Serializer<T> serializer() {
-        return new JsonSerializer<>();
+        return new JsonSerializer<T>();
     }
 
-    @Override
+ 
     public Deserializer<T> deserializer() {
         return new Deserializer<T>() {
-            @Override
+ 
             public void configure(Map<String, ?> configs, boolean isKey) {
 
             }
 
-            @Override
+       
             public T deserialize(String topic, byte[] data) {
                 try {
                     return data == null ? null : (T) OBJECT_MAPPER.readValue(data, clazz);
@@ -47,7 +48,6 @@ public class JsonSerde<T> implements Serde<T> {
                 }
             }
 
-            @Override
             public void close() {
 
             }
